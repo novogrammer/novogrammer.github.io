@@ -1,0 +1,7 @@
+//see https://github.com/hiloki/flocss
+//各scssファイルはblock単位で分割する。
+//projectはサブディレクトリを推奨、
+//projectの共通パーツはcomponentへ
+@use "./foundation";
+@use "./layout";
+@use "./object";

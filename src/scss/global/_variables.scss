@@ -1,0 +1,27 @@
+$ALPHA: 0.6;
+$ALPHA_IN_DARK: 0.9;
+
+$BREAK_WIDTH_PC: 768px;
+
+$WIDTH_SP: 375px;
+//vw算出用
+$PX_TO_VW_SP: calc(100vw / $WIDTH_SP);
+
+$WIDTH_PC: 1200px;
+//vw算出用
+$PX_TO_VW_PC: calc(100vw / $WIDTH_PC);
+
+// letter-spacing計算用
+$AV_TO_EM: calc(1em / 1000);
+
+// https://thegoodcolors.com/?FO90374000
+$THEME_COLOR_MAGENTA:oklch(0.90 0.37 0);
+$THEME_COLOR_ORANGE:oklch(0.90 0.37 34);
+$THEME_COLOR_YELLOW:oklch(0.90 0.37 72);
+$THEME_COLOR_GREEN:oklch(0.90 0.37 136);
+$THEME_COLOR_CYAN:oklch(0.90 0.37 178);
+$THEME_COLOR_BLUE:oklch(0.90 0.37 226);
+$THEME_COLOR_PURPLE:oklch(0.90 0.37 276);
+
+
+

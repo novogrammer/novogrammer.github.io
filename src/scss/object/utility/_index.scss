@@ -1,0 +1,40 @@
+//prefixは"u-"
+
+@use "../../global" as *;
+
+.u-pc-block {
+  display: none;
+  @include mqpc() {
+    display: block;
+  }
+}
+.u-pc-inline {
+  display: none;
+  @include mqpc() {
+    display: inline;
+  }
+}
+.u-pc-inline-block {
+  display: none;
+  @include mqpc() {
+    display: inline-block;
+  }
+}
+.u-sp-block {
+  display: block;
+  @include mqpc() {
+    display: none;
+  }
+}
+.u-sp-inline {
+  display: inline;
+  @include mqpc() {
+    display: none;
+  }
+}
+.u-sp-inline-block {
+  display: inline-block;
+  @include mqpc() {
+    display: none;
+  }
+}

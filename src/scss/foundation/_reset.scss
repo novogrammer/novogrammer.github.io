@@ -1,0 +1,8 @@
+@use "../global" as *;
+
+@use "./ress";
+
+body {
+  text-size-adjust: 100%;
+  @include fontSansSerif();
+}

@@ -1,0 +1,29 @@
+@use "../../global" as *;
+
+.p-section-hero{
+  display:flex;
+  width:100%;
+  height:100svh;
+  justify-content: center;
+  align-items: center;  
+  // background: linear-gradient(45deg, $THEME_COLOR_MAGENTA, $THEME_COLOR_GREEN);
+  // background: linear-gradient(45deg,
+  // $THEME_COLOR_MAGENTA,
+  // $THEME_COLOR_ORANGE,
+  // $THEME_COLOR_YELLOW,
+  // $THEME_COLOR_GREEN,
+  // $THEME_COLOR_CYAN,
+  // $THEME_COLOR_BLUE,
+  // $THEME_COLOR_PURPLE);
+  background: linear-gradient(45deg,
+  $THEME_COLOR_MAGENTA,
+  $THEME_COLOR_ORANGE,
+  $THEME_COLOR_YELLOW,
+  $THEME_COLOR_GREEN);
+  &__title{
+    font-size:8vw;
+    color:#f0f0f0;
+    mix-blend-mode: difference;
+
+  }
+}

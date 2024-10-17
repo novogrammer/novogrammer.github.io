@@ -1,0 +1,10 @@
+//prefixは"p-"
+//重複する場合、componentへ移動させる
+
+//サブディレクトリを作り、prefixとして追加する
+//例えば"/object/project/dummy"のprefixは"p-dummy-"
+
+@use "./p-section-hero.scss";
+@use "./p-section-about.scss";
+@use "./p-section-matome.scss";
+@use "./p-footer.scss";
