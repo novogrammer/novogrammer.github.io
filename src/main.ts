@@ -10,7 +10,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   </section>
   <section class="p-section-resources">
     <div class="p-section-resources__content">
-      <h2 class="p-section-resources__title">Recources</h2>
+      <h2 class="p-section-resources__title">Resources</h2>
       <h3 class="p-section-resources__sub-title">sns</h3>
       <ul class="p-section-resources__list">
         <li class="p-section-resources__item"><a href="https://x.com/novogrammer" target="_blank">𝕏</a></li>
