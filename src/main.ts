@@ -16,6 +16,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <li class="p-section-resources__item"><a href="https://x.com/novogrammer" target="_blank">𝕏</a></li>
         <li class="p-section-resources__item"><a href="https://bsky.app/profile/novogrammer.bsky.social" target="_blank">Bluesky</a></li>
         <li class="p-section-resources__item"><a href="https://www.threads.net/@novogrammer" target="_blank">Threads</a></li>
+        <li class="p-section-resources__item"><a href="https://www.facebook.com/novogrammer" target="_blank">Facebook</a></li>
+        <li class="p-section-resources__item"><a href="https://www.instagram.com/novogrammer/" target="_blank">Instagram</a></li>
       </ul>
       <h3 class="p-section-resources__sub-title">dev</h3>
       <ul class="p-section-resources__list">
