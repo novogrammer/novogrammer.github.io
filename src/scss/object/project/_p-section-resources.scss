@@ -29,6 +29,8 @@
   }
   &__sub-title{
     font-size: 30px * $PX_TO_VW_SP;
+    line-height:1.5;
+    margin:1em 0;
     @include mqpc(){
       font-size:30px;
     }

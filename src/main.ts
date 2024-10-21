@@ -12,7 +12,7 @@ interface ResourceCategory {
 
 const resourceCategoryList: ResourceCategory[] = [
   {
-    name: "sns",
+    name: "SNS",
     items: [
       {
         url: "https://x.com/novogrammer",
@@ -37,7 +37,7 @@ const resourceCategoryList: ResourceCategory[] = [
     ],
   },
   {
-    name: "dev",
+    name: "Dev",
     items: [
       {
         url: "https://github.com/novogrammer",
@@ -54,7 +54,7 @@ const resourceCategoryList: ResourceCategory[] = [
     ],
   },
   {
-    name: "community",
+    name: "Community",
     items: [
       {
         url: "https://scrapbox.io/antenna-osaka/",
