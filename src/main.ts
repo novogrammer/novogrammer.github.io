@@ -1,5 +1,70 @@
 import './scss/style.scss'
 
+interface ResourceItem {
+  text: string;
+  url: string;
+}
+
+interface ResourceCategory {
+  name: string;
+  items: ResourceItem[];
+}
+
+const resourceCategoryList: ResourceCategory[] = [
+  {
+    name: "sns",
+    items: [
+      {
+        url: "https://x.com/novogrammer",
+        text: "𝕏",
+      },
+      {
+        url: "https://bsky.app/profile/novogrammer.bsky.social",
+        text: "Bluesky",
+      },
+      {
+        url: "https://www.threads.net/@novogrammer",
+        text: "Threads",
+      },
+      {
+        url: "https://www.facebook.com/novogrammer",
+        text: "Facebook",
+      },
+      {
+        url: "https://www.instagram.com/novogrammer/",
+        text: "Instagram",
+      },
+    ],
+  },
+  {
+    name: "dev",
+    items: [
+      {
+        url: "https://github.com/novogrammer",
+        text: "github",
+      },
+      {
+        url: "https://www.shadertoy.com/user/novogrammer",
+        text: "shadertoy",
+      },
+      {
+        url: "https://codepen.io/novogrammer",
+        text: "codepen.io",
+      },
+    ],
+  },
+  {
+    name: "community",
+    items: [
+      {
+        url: "https://scrapbox.io/antenna-osaka/",
+        text: "アンテナ大阪のscrapbox",
+      },
+    ],
+  },
+];
+
+
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <div class="l-main">
   <section class="p-section-hero">
@@ -11,24 +76,19 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <section class="p-section-resources">
     <div class="p-section-resources__content">
       <h2 class="p-section-resources__title">Resources</h2>
-      <h3 class="p-section-resources__sub-title">sns</h3>
-      <ul class="p-section-resources__list">
-        <li class="p-section-resources__item"><a href="https://x.com/novogrammer" target="_blank">𝕏</a></li>
-        <li class="p-section-resources__item"><a href="https://bsky.app/profile/novogrammer.bsky.social" target="_blank">Bluesky</a></li>
-        <li class="p-section-resources__item"><a href="https://www.threads.net/@novogrammer" target="_blank">Threads</a></li>
-        <li class="p-section-resources__item"><a href="https://www.facebook.com/novogrammer" target="_blank">Facebook</a></li>
-        <li class="p-section-resources__item"><a href="https://www.instagram.com/novogrammer/" target="_blank">Instagram</a></li>
-      </ul>
-      <h3 class="p-section-resources__sub-title">dev</h3>
-      <ul class="p-section-resources__list">
-        <li class="p-section-resources__item"><a href="https://github.com/novogrammer" target="_blank">github</a></li>
-        <li class="p-section-resources__item"><a href="https://www.shadertoy.com/user/novogrammer" target="_blank">shadertoy</a></li>
-        <li class="p-section-resources__item"><a href="https://codepen.io/novogrammer" target="_blank">codepen.io</a></li>
-      </ul>
-      <h3 class="p-section-resources__sub-title">community</h3>
-      <ul class="p-section-resources__list">
-        <li class="p-section-resources__item"><a href="https://scrapbox.io/antenna-osaka/" target="_blank">アンテナ大阪のscrapbox</a></li>
-      </ul>
+      ${resourceCategoryList.map((resourceCategory)=>{
+        const result=[
+          `<h3 class="p-section-resources__sub-title">${resourceCategory.name}</h3>`,
+          [
+            `<ul class="p-section-resources__list">`,
+            resourceCategory.items.map((item)=>{
+              return `<li class="p-section-resources__item"><a href="${item.url}" target="_blank">${item.text}</a></li>`;
+            }).join("\n")+"\n",
+            `</ul>`,
+          ].join("\n")+"\n",
+        ]
+        return result.join("\n")+"\n";
+      }).join("\n")}
     </div>
   </section>
   <footer class="p-footer">
