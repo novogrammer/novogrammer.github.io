@@ -141,9 +141,9 @@ export default class App{
     }
     const taskList=[
       task01,
-      task02,
       task03,
       task02,
+      task03,
     ];
     for(let i=0;i<3*3*3;i++){
       taskList[i%taskList.length]();
