@@ -46,7 +46,7 @@ function createDynamicCube():THREE.Mesh{
     roughness:0.3,
   });
   const cube = new THREE.Mesh(geometry, material);
-  cube.userData.physics = { mass: 1 };
+  cube.userData.physics = { mass: 1, restitution: 0.7 };
   return cube;
 }
 function createDynamicSphere():THREE.Mesh{
@@ -57,7 +57,7 @@ function createDynamicSphere():THREE.Mesh{
     roughness:0.3,
   });
   const sphere = new THREE.Mesh(geometry, material);
-  sphere.userData.physics = { mass: 1 };
+  sphere.userData.physics = { mass: 1, restitution: 0.9 };
   return sphere;
 }
 
@@ -69,7 +69,7 @@ function createWall(width:number,height:number,depth:number):THREE.Mesh{
     roughness:1,
   });
   const wall = new THREE.Mesh(geometry, material);
-  wall.userData.physics = { mass: 0 };
+  wall.userData.physics = { mass: 0, restitution: 1 };
   return wall;
 }
 
@@ -135,7 +135,7 @@ export default class App{
         return;
       }
       const mesh=App.suzanneOriginal.clone(true);
-      mesh.userData.physics={mass:1};
+      mesh.userData.physics={ mass: 1, restitution: 0.8};
       meshList.push(mesh);
       scene.add(mesh);
     }
