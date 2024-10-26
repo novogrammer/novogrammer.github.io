@@ -1,3 +1,4 @@
+import App from './App';
 import './scss/style.scss'
 
 interface ResourceItem {
@@ -73,6 +74,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <section class="p-section-about">
     <h2 class="p-section-about__title">novogrammer is a programmer.</h2>
   </section>
+  <section class="p-section-rapier">
+  </section>
   <section class="p-section-resources">
     <div class="p-section-resources__content">
       <h2 class="p-section-resources__title">Resources</h2>
@@ -97,3 +100,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 </div>
 `
 
+App.initAsync().then(()=>{
+  (window as any).app=new App();
+}).catch((error)=>{
+  console.error(error);
+})
