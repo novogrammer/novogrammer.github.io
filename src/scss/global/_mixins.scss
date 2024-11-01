@@ -74,16 +74,38 @@
   }
 }
 
-@mixin fontSansSerif() {
-  font-family: Helvetica, "Yu Gothic Medium", "游ゴシック Medium", YuGothic,
-    "游ゴシック体", "ヒラギノ角ゴ Pro W3", "ヒラギノ角ゴ W3",
-    "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, sans-serif;
+
+@mixin fontMPlus1CodeBase(){
+  font-family: "M PLUS 1 Code", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 
-@mixin fontSerif() {
-  font-family: "Times New Roman", "游明朝", YuMincho, "ヒラギノ明朝 ProN W3",
-    "Hiragino Mincho ProN", "メイリオ", Meiryo, serif;
+@mixin fontMPlus1Code100(){
+  @include fontMPlus1CodeBase();
+  font-weight: 100;
 }
+@mixin fontMPlus1Code200(){
+  @include fontMPlus1CodeBase();
+  font-weight: 200;
+}
+@mixin fontMPlus1Code300(){
+  @include fontMPlus1CodeBase();
+  font-weight: 300;
+}
+@mixin fontMPlus1Code400(){
+  @include fontMPlus1CodeBase();
+  font-weight: 400;
+}
+@mixin fontMPlus1Code500(){
+  @include fontMPlus1CodeBase();
+  font-weight: 500;
+}
+@mixin fontMPlus1Code600(){
+  @include fontMPlus1CodeBase();
+  font-weight: 600;
+}
+
 
 @mixin mqpc() {
   @media screen and (min-width: $BREAK_WIDTH_PC) {
