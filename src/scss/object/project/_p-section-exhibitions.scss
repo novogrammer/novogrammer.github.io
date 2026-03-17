@@ -26,11 +26,24 @@
     font-size:42px * $PX_TO_VW_SP;
     line-height:1.2;
     color:$THEME_COLOR_YELLOW;
-    margin-bottom:48px * $PX_TO_VW_SP;
+    margin-bottom:16px * $PX_TO_VW_SP;
     text-align:center;
     @include mqpc(){
       font-size:50px;
-      margin-bottom:48px;
+      margin-bottom:16px;
+    }
+  }
+  &__lead{
+    width:280px * $PX_TO_VW_SP;
+    margin:0 auto 40px * $PX_TO_VW_SP;
+    font-size:18px * $PX_TO_VW_SP;
+    line-height:1.7;
+    color:rgba(255,255,255,0.8);
+    text-align:center;
+    @include mqpc(){
+      width:720px;
+      margin:0 auto 40px;
+      font-size:18px;
     }
   }
   &__list{

@@ -159,6 +159,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <section class="p-section-exhibitions">
     <div class="p-section-exhibitions__content">
       <h2 class="p-section-exhibitions__title">Personal Works</h2>
+      <p class="p-section-exhibitions__lead">これまでに制作した作品のうち、Webで見ることができるものを掲載しています。</p>
       <ul class="p-section-exhibitions__list">
         ${exhibitionWorkList.map((work)=>{
           return `
