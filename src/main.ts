@@ -58,6 +58,10 @@ const resourceCategoryList: ResourceCategory[] = [
     name: "Community",
     items: [
       {
+        url:"https://www.facebook.com/groups/196438880943262",
+        text:"アンテナ大阪のFacebook",
+      },
+      {
         url: "https://scrapbox.io/antenna-osaka/",
         text: "アンテナ大阪のscrapbox",
       },
