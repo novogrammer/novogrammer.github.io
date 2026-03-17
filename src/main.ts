@@ -11,6 +11,82 @@ interface ResourceCategory {
   items: ResourceItem[];
 }
 
+interface ExhibitionLink {
+  label: string;
+  url: string;
+}
+
+interface ExhibitionWork {
+  title: string;
+  year: string;
+  description: string;
+  context: string;
+  links: ExhibitionLink[];
+}
+
+const exhibitionWorkList: ExhibitionWork[] = [
+  {
+    title: "顔砂（かおすな）",
+    year: "2026",
+    description: "Webカメラで取得した映像を砂粒のシミュレーションに変換し、崩壊と再構成を繰り返す様子を可視化するインタラクティブ作品。 砂粒はセルオートマトンとして定義され、粒子の流動をthree.jsのTSL機能で実装したWebGPUベースのGPGPU処理によりリアルタイムで描画する。",
+    context: "Shown at HOMEWORKS 2025 10th Anniversary",
+    links: [
+      {
+        label: "Live site",
+        url: "https://novogrammer.github.io/face-sandify/",
+      },
+      {
+        label: "Source",
+        url: "https://github.com/novogrammer/face-sandify",
+      },
+      {
+        label: "Exhibition",
+        url: "https://peatix.com/event/4680492",
+      },
+    ],
+  },
+  {
+    title: "風船割りゲーム",
+    year: "2023",
+    description: "3Dミニゲームを僕も作ってみることにしました。",
+    context: "Shown at SNACKS Vol.5",
+    links: [
+      {
+        label: "Live site",
+        url: "https://novogrammer.github.io/balloon-popping-game/",
+      },
+      {
+        label: "Source",
+        url: "https://github.com/novogrammer/balloon-popping-game",
+      },
+      {
+        label: "Exhibition",
+        url: "https://peatix.com/event/3611386",
+      },
+    ],
+  },
+  {
+    title: "Rust と WebAssembly の習作",
+    year: "2022",
+    description: "Rust の学習のために負荷の高めな処理を Rust でプログラミングし、WebAssembly 用に書き出し、three.js で描画するプログラムを作りました。",
+    context: "Shown at SNACKS Vol.4",
+    links: [
+      {
+        label: "Live site",
+        url: "https://novogrammer.github.io/rust-voxel-polygon-study/",
+      },
+      {
+        label: "Source",
+        url: "https://github.com/novogrammer/rust-voxel-polygon-study",
+      },
+      {
+        label: "Exhibition",
+        url: "https://peatix.com/event/3293270",
+      },
+    ],
+  },
+];
+
 const resourceCategoryList: ResourceCategory[] = [
   {
     name: "SNS",
@@ -79,6 +155,30 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <h2 class="p-section-about__title">novogrammer is a programmer.</h2>
   </section>
   <section class="p-section-rapier">
+  </section>
+  <section class="p-section-exhibitions">
+    <div class="p-section-exhibitions__content">
+      <h2 class="p-section-exhibitions__title">Personal Works</h2>
+      <ul class="p-section-exhibitions__list">
+        ${exhibitionWorkList.map((work)=>{
+          return `
+            <li class="p-section-exhibitions__item">
+              <article class="p-section-exhibitions__card">
+                <p class="p-section-exhibitions__meta">${work.year}</p>
+                <h3 class="p-section-exhibitions__work-title">${work.title}</h3>
+                <p class="p-section-exhibitions__description">${work.description}</p>
+                <p class="p-section-exhibitions__context">${work.context}</p>
+                <ul class="p-section-exhibitions__links">
+                  ${work.links.map((link)=>{
+                    return `<li class="p-section-exhibitions__link-item"><a href="${link.url}" target="_blank" rel="noreferrer">${link.label}</a></li>`;
+                  }).join("\n")}
+                </ul>
+              </article>
+            </li>
+          `;
+        }).join("\n")}
+      </ul>
+    </div>
   </section>
   <section class="p-section-resources">
     <div class="p-section-resources__content">

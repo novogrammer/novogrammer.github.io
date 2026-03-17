@@ -1,0 +1,120 @@
+@use "../../global" as *;
+
+.p-section-exhibitions{
+  width:100%;
+  padding:100px * $PX_TO_VW_SP 0;
+  background:
+    radial-gradient(circle at top left,
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0) 36%),
+    linear-gradient(160deg,
+    #111 0%,
+    #1f2430 48%,
+    #102118 100%);
+  @include mqpc(){
+    padding:100px 0;
+  }
+  &__content{
+    width:320px * $PX_TO_VW_SP;
+    margin-left:auto;
+    margin-right:auto;
+    @include mqpc(){
+      width:960px;
+    }
+  }
+  &__title{
+    font-size:42px * $PX_TO_VW_SP;
+    line-height:1.2;
+    color:$THEME_COLOR_YELLOW;
+    margin-bottom:48px * $PX_TO_VW_SP;
+    text-align:center;
+    @include mqpc(){
+      font-size:50px;
+      margin-bottom:48px;
+    }
+  }
+  &__list{
+    display:grid;
+    gap:24px * $PX_TO_VW_SP;
+    @include mqpc(){
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:24px;
+    }
+  }
+  &__item{
+    min-width:0;
+  }
+  &__card{
+    height:100%;
+    padding:24px * $PX_TO_VW_SP;
+    border:1px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    @include mqpc(){
+      padding:24px;
+    }
+  }
+  &__meta{
+    font-size:16px * $PX_TO_VW_SP;
+    line-height:1.5;
+    color:$THEME_COLOR_CYAN;
+    margin-bottom:12px * $PX_TO_VW_SP;
+    @include mqpc(){
+      font-size:16px;
+      margin-bottom:12px;
+    }
+  }
+  &__work-title{
+    font-size:30px * $PX_TO_VW_SP;
+    line-height:1.2;
+    color:#fff;
+    margin-bottom:16px * $PX_TO_VW_SP;
+    @include mqpc(){
+      font-size:30px;
+      margin-bottom:16px;
+    }
+  }
+  &__description{
+    font-size:18px * $PX_TO_VW_SP;
+    line-height:1.7;
+    color:rgba(255,255,255,0.88);
+    margin-bottom:14px * $PX_TO_VW_SP;
+    @include mqpc(){
+      font-size:18px;
+      margin-bottom:14px;
+    }
+  }
+  &__context{
+    font-size:15px * $PX_TO_VW_SP;
+    line-height:1.6;
+    color:rgba(255,255,255,0.58);
+    margin-bottom:24px * $PX_TO_VW_SP;
+    @include mqpc(){
+      font-size:15px;
+      margin-bottom:24px;
+    }
+  }
+  &__links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  &__link-item{
+    a{
+      display:inline-flex;
+      align-items:center;
+      min-height:44px;
+      padding:0 16px;
+      border:1px solid rgba(255,255,255,0.24);
+      color:$THEME_COLOR_GREEN;
+      text-decoration:none;
+      background:rgba(0,0,0,0.2);
+      transition:background-color 0.2s ease,color 0.2s ease,border-color 0.2s ease;
+      &:hover{
+        color:#111;
+        background:$THEME_COLOR_GREEN;
+        border-color:$THEME_COLOR_GREEN;
+      }
+    }
+  }
+}
