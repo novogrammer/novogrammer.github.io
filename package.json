@@ -16,7 +16,7 @@
     "vite-plugin-wasm": "^3.3.0"
   },
   "dependencies": {
-    "@dimforge/rapier3d-compat": "^0.14.0",
+    "@dimforge/rapier3d-compat": "^0.19.3",
     "gsap": "^3.12.5",
     "three": "^0.184.0"
   }
