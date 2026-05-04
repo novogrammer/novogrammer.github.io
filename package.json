@@ -12,10 +12,11 @@
     "@types/three": "^0.184.0",
     "sass": "^1.80.0",
     "typescript": "^5.5.3",
-    "vite": "^8.0.10"
+    "vite": "^8.0.10",
+    "vite-plugin-wasm": "^3.5.0"
   },
   "dependencies": {
-    "@dimforge/rapier3d-compat": "^0.19.3",
+    "@dimforge/rapier3d": "^0.19.3",
     "gsap": "^3.12.5",
     "three": "^0.184.0"
   }

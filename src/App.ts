@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { Inspector } from 'three/examples/jsm/inspector/Inspector.js';
 import gsap from "gsap";
 
-import RAPIER from "@dimforge/rapier3d-compat"
+import RAPIER from "@dimforge/rapier3d"
 import { getElementSize } from './dom_utils';
 import { BREAK_WIDTH_PC, IS_DEBUG } from './constants';
 import RapierPhysics from './RapierPhysics';
@@ -392,7 +392,6 @@ export default class App{
   }
 
   static async initAsync():Promise<void>{
-    await RAPIER.init();
     const gltfLoader=new GLTFLoader();
 
     const gltf= await gltfLoader.loadAsync("./suzanne-smooth.glb");
