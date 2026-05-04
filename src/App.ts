@@ -109,7 +109,6 @@ export default class App{
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
     renderer.setSize(width, height);
-    await renderer.init();
     this.containerElement.appendChild(renderer.domElement);
 
     const ambientLight = new THREE.AmbientLight(0xffffff,0.6);
@@ -264,11 +263,13 @@ export default class App{
     })
     this.onResize();
 
-    const animate=()=> {
-      requestAnimationFrame(animate);
-      this.onTick();
+    if (!this.threeObjects) {
+      throw new Error("threeObjects is null");
     }
-    animate();
+    const { renderer } = this.threeObjects;
+    renderer.setAnimationLoop(()=>{
+      this.onTick();
+    });
 
     const addOnMotion=()=>{
       window.addEventListener("devicemotion",(deviceMotionEvent)=>{
