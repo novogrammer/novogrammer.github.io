@@ -1,5 +1,5 @@
 // three.js/examples/jsm/physics/RapierPhysics.jsより
-import * as THREE from "three";
+import * as THREE from "three/webgpu";
 import type RAPIER from "@dimforge/rapier3d-compat"
 
 type TypeOfRAPIER = typeof RAPIER;
@@ -224,4 +224,3 @@ export default class RapierPhysics {
   }
 
 }
-

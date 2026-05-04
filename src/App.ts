@@ -1,7 +1,5 @@
-
-
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'three/webgpu';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import gsap from "gsap";
 
 import RAPIER from "@dimforge/rapier3d-compat"
@@ -18,7 +16,7 @@ const WALL_WIDTH=10*MAIN_SCALE;
 const BODY_SIZE=1*MAIN_SCALE;
 
 interface ThreeObjects{
-  renderer:THREE.WebGLRenderer;
+  renderer:THREE.WebGPURenderer;
   scene:THREE.Scene;
   camera:THREE.PerspectiveCamera;
   meshList:THREE.Mesh[];
@@ -94,18 +92,24 @@ export default class App{
     this.previousTime=getTime();
     this.previousScrollPositionY=0;
     this.previousScrollVelocityY=0;
-    this.setupThree();
+  }
+  async initAsync():Promise<void>{
+    await this.setupThreeAsync();
     this.setupGsap();
     this.setupEvents();
   }
-  setupThree():void{
+  async setupThreeAsync():Promise<void>{
 
     const {width,height}=getElementSize(this.containerElement);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(30, width / height, 0.001, 1000);
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGPURenderer({
+      antialias:true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
     renderer.setSize(width, height);
+    await renderer.init();
     this.containerElement.appendChild(renderer.domElement);
 
     const ambientLight = new THREE.AmbientLight(0xffffff,0.6);
@@ -308,6 +312,7 @@ export default class App{
       height,
     } = getElementSize(this.containerElement);
 
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
     renderer.setSize(width, height);
 
     camera.aspect = width / height;

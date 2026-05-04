@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import * as THREE from "three/webgpu";
 
 export function calcCameraZ(height: number, fovDeg: number): number {
   const cameraZ = (height / 2) / Math.tan((fovDeg / 2) * THREE.MathUtils.DEG2RAD);

@@ -205,8 +205,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 </div>
 `
 
-App.initAsync().then(()=>{
-  (window as any).app=new App();
+App.initAsync().then(async ()=>{
+  const app=new App();
+  await app.initAsync();
+  (window as any).app=app;
 }).catch((error)=>{
   console.error(error);
 })
