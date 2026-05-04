@@ -29,6 +29,12 @@ interface ThreeObjects{
   wallRight:THREE.Mesh;
 }
 
+interface InspectorWithSettings extends Inspector {
+  settings: {
+    _getExtensions: () => Promise<unknown[]>;
+  };
+}
+
 function getTime(){
   return performance.now()*0.001;
 }
@@ -113,7 +119,11 @@ export default class App{
     this.containerElement.appendChild(renderer.domElement);
 
     if (IS_DEBUG) {
-      const inspector = new Inspector();
+      const inspector = new Inspector() as InspectorWithSettings;
+      // three Inspector は extensions/extensions.json を fetch するため、未使用の拡張読込は止める。
+      inspector.settings._getExtensions = async function () {
+        return [];
+      };
       renderer.inspector = inspector;
     }
 
