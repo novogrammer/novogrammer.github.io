@@ -337,7 +337,7 @@ export default class App{
       if(deviceMotionEvent.accelerationIncludingGravity.z!==null){
         this.gravity.z=deviceMotionEvent.accelerationIncludingGravity.z*-1;
       }
-      console.log(`this.gravity: ${this.gravity}`);
+      console.log("this.gravity:", this.gravity);
     }
   }
 
