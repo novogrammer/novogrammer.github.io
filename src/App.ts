@@ -1,5 +1,6 @@
 import * as THREE from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { Inspector } from 'three/examples/jsm/inspector/Inspector.js';
 import gsap from "gsap";
 
 import RAPIER from "@dimforge/rapier3d-compat"
@@ -110,6 +111,11 @@ export default class App{
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
     renderer.setSize(width, height);
     this.containerElement.appendChild(renderer.domElement);
+
+    if (IS_DEBUG) {
+      const inspector = new Inspector();
+      renderer.inspector = inspector;
+    }
 
     const ambientLight = new THREE.AmbientLight(0xffffff,0.6);
     scene.add(ambientLight);
