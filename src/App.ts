@@ -277,6 +277,9 @@ export default class App{
     window.addEventListener("resize",()=>{
       this.onResize();
     })
+    window.addEventListener("scroll",()=>{
+      this.updateCameraFrustum();
+    }, { passive: true })
     this.onResize();
 
     if (!this.threeObjects) {
@@ -334,7 +337,22 @@ export default class App{
 
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+    this.updateCameraFrustum();
 
+  }
+  updateCameraFrustum():void{
+    if (!this.threeObjects) {
+      throw new Error("threeObjects is null");
+    }
+    const { camera } = this.threeObjects;
+    const { width, height } = getElementSize(this.containerElement);
+    const rect = this.containerElement.getBoundingClientRect();
+    const viewportCenterY = window.innerHeight * 0.5;
+    const targetY = viewportCenterY - rect.top;
+    const offsetY = height * 0.5 - targetY;
+
+    camera.position.y = WALL_LENGTH * (1 - targetY / height);
+    camera.setViewOffset(width, height, 0, offsetY, width, height);
   }
   onMotion(deviceMotionEvent:DeviceMotionEvent){
     if(deviceMotionEvent.accelerationIncludingGravity){
