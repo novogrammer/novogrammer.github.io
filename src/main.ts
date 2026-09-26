@@ -20,11 +20,26 @@ interface ExhibitionWork {
   title: string;
   year: string;
   description: string;
-  context: string;
+  context?: string;
   links: ExhibitionLink[];
 }
 
 const exhibitionWorkList: ExhibitionWork[] = [
+  {
+    title: "顔万華鏡 three.js版",
+    year: "2026",
+    description: "顔の映像を万華鏡のような模様に変換する、three.js製のインタラクティブ作品。",
+    links: [
+      {
+        label: "Live site",
+        url: "https://novogrammer.github.io/kaleidoscope-three/",
+      },
+      {
+        label: "Source",
+        url: "https://github.com/novogrammer/kaleidoscope-three",
+      },
+    ],
+  },
   {
     title: "顔砂（かおすな）",
     year: "2026",
@@ -168,7 +183,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
                 <p class="p-section-exhibitions__meta">${work.year}</p>
                 <h3 class="p-section-exhibitions__work-title">${work.title}</h3>
                 <p class="p-section-exhibitions__description">${work.description}</p>
-                <p class="p-section-exhibitions__context">${work.context}</p>
+                ${work.context ? `<p class="p-section-exhibitions__context">${work.context}</p>` : ""}
                 <ul class="p-section-exhibitions__links">
                   ${work.links.map((link)=>{
                     return `<li class="p-section-exhibitions__link-item"><a href="${link.url}" target="_blank" rel="noreferrer">${link.label}</a></li>`;
