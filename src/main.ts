@@ -28,7 +28,7 @@ const exhibitionWorkList: ExhibitionWork[] = [
   {
     title: "顔万華鏡 three.js版",
     year: "2026",
-    description: "顔の映像を万華鏡のような模様に変換する、three.js製のインタラクティブ作品。",
+    description: "カメラに映った顔の位置に追従し、顔を中心に光る紙吹雪が万華鏡模様を作るthree.js製の作品。対応環境ではHDR表示にもなります。",
     links: [
       {
         label: "Live site",
