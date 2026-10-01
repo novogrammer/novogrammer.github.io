@@ -18,6 +18,7 @@
   "dependencies": {
     "@dimforge/rapier3d": "^0.19.3",
     "gsap": "^3.12.5",
+    "parallax-portal": "git+https://github.com/novogrammer/parallax-portal.git#bd834ca4a75f887a2cd54bf433f0fc8be856cf06",
     "three": "^0.184.0"
   }
 }

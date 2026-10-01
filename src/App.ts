@@ -2,12 +2,12 @@ import * as THREE from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { Inspector } from 'three/examples/jsm/inspector/Inspector.js';
 import gsap from "gsap";
+import { PortalRuntime } from 'parallax-portal';
 
 import RAPIER from "@dimforge/rapier3d"
 import { getElementSize } from './dom_utils';
 import { BREAK_WIDTH_PC, IS_DEBUG } from './constants';
 import RapierPhysics from './RapierPhysics';
-import { calcCameraZ } from './three_utils';
 
 
 const MAIN_SCALE=0.5;
@@ -16,17 +16,9 @@ const WALL_LENGTH=5*MAIN_SCALE;
 const WALL_WIDTH=10*MAIN_SCALE;
 const BODY_SIZE=1*MAIN_SCALE;
 
-interface ThreeObjects{
-  renderer:THREE.WebGPURenderer;
+interface RoomObjects{
   scene:THREE.Scene;
-  camera:THREE.PerspectiveCamera;
-  meshList:THREE.Mesh[];
-  wallTop:THREE.Mesh;
-  wallBottom:THREE.Mesh;
-  wallFront:THREE.Mesh;
-  wallBack:THREE.Mesh;
-  wallLeft:THREE.Mesh;
-  wallRight:THREE.Mesh;
+  ownedMeshes:THREE.Mesh[];
 }
 
 interface InspectorWithSettings extends Inspector {
@@ -79,7 +71,8 @@ function createWall(width:number,height:number,depth:number):THREE.Mesh{
 
 export default class App{
   containerElement:HTMLElement;
-  threeObjects?:ThreeObjects;
+  renderer?:THREE.WebGPURenderer;
+  portalRuntime?:PortalRuntime;
   rapierPhysics:RapierPhysics;
 
   previousTime:number;
@@ -101,22 +94,20 @@ export default class App{
     this.previousScrollVelocityY=0;
   }
   async initAsync():Promise<void>{
-    await this.setupThreeAsync();
+    this.setupRenderer();
     this.setupGsap();
     this.setupEvents();
   }
-  async setupThreeAsync():Promise<void>{
-
-    const {width,height}=getElementSize(this.containerElement);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(30, width / height, 0.001, 1000);
+  setupRenderer():void{
     const renderer = new THREE.WebGPURenderer({
       antialias:true,
+      alpha:true,
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    renderer.setSize(width, height);
-    this.containerElement.appendChild(renderer.domElement);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+    renderer.domElement.classList.add('p-section-rapier__canvas');
+    document.body.appendChild(renderer.domElement);
 
     if (IS_DEBUG) {
       const inspector = new Inspector() as InspectorWithSettings;
@@ -127,6 +118,14 @@ export default class App{
       renderer.inspector = inspector;
     }
 
+    this.renderer=renderer;
+  }
+
+  createRoom():RoomObjects{
+    const {width,height}=getElementSize(this.containerElement);
+
+    const scene = new THREE.Scene();
+    const ownedMeshes:THREE.Mesh[]=[];
     const ambientLight = new THREE.AmbientLight(0xffffff,0.6);
     scene.add(ambientLight);
 
@@ -138,11 +137,13 @@ export default class App{
     const task01=()=>{
       const mesh=createDynamicCube();
       meshList.push(mesh);
+      ownedMeshes.push(mesh);
       scene.add(mesh);
     };
     const task02=()=>{
       const mesh=createDynamicSphere();
       meshList.push(mesh);
+      ownedMeshes.push(mesh);
       scene.add(mesh);
     };
     const task03=()=>{
@@ -166,31 +167,52 @@ export default class App{
     }
 
     const wallTop=createWall(WALL_WIDTH,WALL_THICKNESS,WALL_LENGTH);
+    ownedMeshes.push(wallTop);
     scene.add(wallTop);
     const wallBottom=createWall(WALL_WIDTH,WALL_THICKNESS,WALL_LENGTH);
+    ownedMeshes.push(wallBottom);
     scene.add(wallBottom);
     const wallFront=createWall(WALL_WIDTH,WALL_LENGTH,WALL_THICKNESS);
+    ownedMeshes.push(wallFront);
     wallFront.visible=false;
     scene.add(wallFront);
     const wallBack=createWall(WALL_WIDTH,WALL_LENGTH,WALL_THICKNESS);
+    ownedMeshes.push(wallBack);
     scene.add(wallBack);
     const wallLeft=createWall(WALL_THICKNESS,WALL_LENGTH,WALL_LENGTH);
+    ownedMeshes.push(wallLeft);
     scene.add(wallLeft);
     const wallRight=createWall(WALL_THICKNESS,WALL_LENGTH,WALL_LENGTH);
+    ownedMeshes.push(wallRight);
     scene.add(wallRight);
 
+    // length^(1/3)
+    const l=Math.ceil(Math.pow(meshList.length,1/3));
+    for(let iz=0;iz<l;iz++){
+      const z=(iz-(l-1)/2)*BODY_SIZE;
+      for(let iy=0;iy<l;iy++){
+        const y=(iy-(l-1)/2)*BODY_SIZE;
+        for(let ix=0;ix<l;ix++){
+          const x=(ix-(l-1)/2)*BODY_SIZE;
+          const i=iz*l*l+iy*l+ix;
+          if(i<meshList.length){
+            meshList[i].position.set(x,y+WALL_LENGTH*0.5,z);
+          }
+        }
+      }
+    }
+    wallTop.position.set(0,WALL_LENGTH+WALL_THICKNESS*0.5,0);
+    wallBottom.position.set(0,WALL_THICKNESS*-0.5,0);
+    wallFront.position.set(0,WALL_LENGTH*0.5,WALL_LENGTH*0.5+WALL_THICKNESS*0.5);
+    wallBack.position.set(0,WALL_LENGTH*0.5,WALL_LENGTH*-0.5+WALL_THICKNESS*-0.5);
 
-    this.threeObjects={
-      renderer,
+    const wallWidth=WALL_LENGTH*width/height;
+    wallLeft.position.set(wallWidth*-0.5+WALL_THICKNESS*-0.5,WALL_LENGTH*0.5,0);
+    wallRight.position.set(wallWidth*0.5+WALL_THICKNESS*0.5,WALL_LENGTH*0.5,0);
+
+    return {
       scene,
-      camera,
-      meshList,
-      wallTop,
-      wallBottom,
-      wallFront,
-      wallBack,
-      wallLeft,
-      wallRight,
+      ownedMeshes,
     };
   }
   setupGsap():void{
@@ -208,66 +230,45 @@ export default class App{
         console.log(`isPc: ${isPc}`);
       }
 
-      if(!this.threeObjects){
-        throw new Error("threeObjects is null");
+      if(!this.renderer){
+        throw new Error("renderer is null");
       }
 
-      const {
-        scene,
-        camera,
-        meshList,
-        wallTop,
-        wallBottom,
-        wallFront,
-        wallBack,
-        wallLeft,
-        wallRight,
-      }=this.threeObjects;
-
-      this.rapierPhysics.resetWorld();
+      const room=this.createRoom();
 
       this.previousTime=getTime();
       this.previousScrollPositionY=getScrollPositionY();
       this.previousScrollVelocityY=0;
-  
-      // length^(1/3)
-      const l=Math.ceil(Math.pow(meshList.length,1/3));
-      for(let iz=0;iz<l;iz++){
-        const z=(iz-(l-1)/2)*BODY_SIZE;
-        for(let iy=0;iy<l;iy++){
-          const y=(iy-(l-1)/2)*BODY_SIZE;
-          for(let ix=0;ix<l;ix++){
-            const x=(ix-(l-1)/2)*BODY_SIZE;
-            const i=iz*l*l+iy*l+ix;
-            if(i<meshList.length){
-              const mesh=meshList[i];
-              mesh.position.set(x,y+WALL_LENGTH*0.5,z);
-            }
+      this.rapierPhysics.addScene(room.scene);
+
+      const portalRuntime=new PortalRuntime({
+        renderer:this.renderer,
+        projection:{referenceFovY:THREE.MathUtils.degToRad(30)},
+        referenceProjectionHeightMeters:WALL_LENGTH,
+        portals:[{
+          element:this.containerElement,
+          scene:room.scene,
+          clearColor:0x000000,
+          cameraTopY:WALL_LENGTH,
+          cameraBottomY:0,
+          cameraNear:0.001,
+        }],
+      });
+      this.portalRuntime=portalRuntime;
+
+      return ()=>{
+        this.portalRuntime=undefined;
+        portalRuntime.dispose();
+        this.rapierPhysics.resetWorld();
+        for(const mesh of room.ownedMeshes){
+          mesh.geometry.dispose();
+          const materials=Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+          for(const material of materials){
+            material.dispose();
           }
         }
-      }
-      wallTop.position.set(0,WALL_LENGTH+WALL_THICKNESS*0.5,0);
-      wallBottom.position.set(0,WALL_THICKNESS*-0.5,0);
-      wallFront.position.set(0,WALL_LENGTH*0.5,WALL_LENGTH*0.5+WALL_THICKNESS*0.5);
-      wallBack.position.set(0,WALL_LENGTH*0.5,WALL_LENGTH*-0.5+WALL_THICKNESS*-0.5);
-
-      const cameraZ=calcCameraZ(WALL_LENGTH,camera.fov)+WALL_LENGTH*0.5;
-      const wallWidth=WALL_LENGTH*camera.aspect;
-
-      camera.position.set(0,WALL_LENGTH*0.5,cameraZ);
-      wallLeft.position.set(wallWidth*-0.5+WALL_THICKNESS*-0.5,WALL_LENGTH*0.5,0);
-      wallRight.position.set(wallWidth*0.5+WALL_THICKNESS*0.5,WALL_LENGTH*0.5,0);
-
-      if(isSp){
-
-      }
-      if(isPc){
-
-      }
-
-      this.rapierPhysics.addScene(scene);
-
-
+        room.scene.clear();
+      };
     });
 
   }
@@ -277,16 +278,12 @@ export default class App{
     window.addEventListener("resize",()=>{
       this.onResize();
     })
-    window.addEventListener("scroll",()=>{
-      this.updateCameraFrustum();
-    }, { passive: true })
     this.onResize();
 
-    if (!this.threeObjects) {
-      throw new Error("threeObjects is null");
+    if (!this.renderer) {
+      throw new Error("renderer is null");
     }
-    const { renderer } = this.threeObjects;
-    renderer.setAnimationLoop(()=>{
+    this.renderer.setAnimationLoop(()=>{
       this.onTick();
     });
 
@@ -322,37 +319,11 @@ export default class App{
   
   }
   onResize():void{
-    if (!this.threeObjects) {
-      throw new Error("threeObjects is null");
+    if (!this.renderer) {
+      throw new Error("renderer is null");
     }
-    const { renderer, camera } = this.threeObjects;
-
-    const {
-      width,
-      height,
-    } = getElementSize(this.containerElement);
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    renderer.setSize(width, height);
-
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    this.updateCameraFrustum();
-
-  }
-  updateCameraFrustum():void{
-    if (!this.threeObjects) {
-      throw new Error("threeObjects is null");
-    }
-    const { camera } = this.threeObjects;
-    const { width, height } = getElementSize(this.containerElement);
-    const rect = this.containerElement.getBoundingClientRect();
-    const viewportCenterY = window.innerHeight * 0.5;
-    const targetY = viewportCenterY - rect.top;
-    const offsetY = height * 0.5 - targetY;
-
-    camera.position.y = WALL_LENGTH * (1 - targetY / height);
-    camera.setViewOffset(width, height, 0, offsetY, width, height);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
   onMotion(deviceMotionEvent:DeviceMotionEvent){
     if(deviceMotionEvent.accelerationIncludingGravity){
@@ -371,8 +342,8 @@ export default class App{
 
   onTick():void{
 
-    if(!this.threeObjects){
-      throw new Error("threeObjects is null");
+    if(!this.renderer){
+      throw new Error("renderer is null");
     }
     if(!this.rapierPhysics){
       throw new Error("rapierPhysics is null");
@@ -412,10 +383,9 @@ export default class App{
   
     }
 
-    const {renderer,scene,camera}=this.threeObjects;
-
-
-    renderer.render(scene, camera);
+    this.renderer.setClearColor(0x000000, 0);
+    this.renderer.clear(true, true, true);
+    this.portalRuntime?.render({width:window.innerWidth,height:window.innerHeight});
 
   }
 
