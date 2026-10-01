@@ -15,6 +15,8 @@ const WALL_THICKNESS=1*MAIN_SCALE;
 const WALL_LENGTH=5*MAIN_SCALE;
 const WALL_WIDTH=10*MAIN_SCALE;
 const BODY_SIZE=1*MAIN_SCALE;
+// 部屋の手前端を Portal の投影基準面 z=0 に合わせる。
+const ROOM_CENTER_Z=-WALL_LENGTH*0.5;
 
 interface RoomObjects{
   scene:THREE.Scene;
@@ -189,7 +191,7 @@ export default class App{
     // length^(1/3)
     const l=Math.ceil(Math.pow(meshList.length,1/3));
     for(let iz=0;iz<l;iz++){
-      const z=(iz-(l-1)/2)*BODY_SIZE;
+      const z=ROOM_CENTER_Z+(iz-(l-1)/2)*BODY_SIZE;
       for(let iy=0;iy<l;iy++){
         const y=(iy-(l-1)/2)*BODY_SIZE;
         for(let ix=0;ix<l;ix++){
@@ -201,14 +203,14 @@ export default class App{
         }
       }
     }
-    wallTop.position.set(0,WALL_LENGTH+WALL_THICKNESS*0.5,0);
-    wallBottom.position.set(0,WALL_THICKNESS*-0.5,0);
-    wallFront.position.set(0,WALL_LENGTH*0.5,WALL_LENGTH*0.5+WALL_THICKNESS*0.5);
-    wallBack.position.set(0,WALL_LENGTH*0.5,WALL_LENGTH*-0.5+WALL_THICKNESS*-0.5);
+    wallTop.position.set(0,WALL_LENGTH+WALL_THICKNESS*0.5,ROOM_CENTER_Z);
+    wallBottom.position.set(0,WALL_THICKNESS*-0.5,ROOM_CENTER_Z);
+    wallFront.position.set(0,WALL_LENGTH*0.5,ROOM_CENTER_Z+WALL_LENGTH*0.5+WALL_THICKNESS*0.5);
+    wallBack.position.set(0,WALL_LENGTH*0.5,ROOM_CENTER_Z-WALL_LENGTH*0.5-WALL_THICKNESS*0.5);
 
     const wallWidth=WALL_LENGTH*width/height;
-    wallLeft.position.set(wallWidth*-0.5+WALL_THICKNESS*-0.5,WALL_LENGTH*0.5,0);
-    wallRight.position.set(wallWidth*0.5+WALL_THICKNESS*0.5,WALL_LENGTH*0.5,0);
+    wallLeft.position.set(wallWidth*-0.5+WALL_THICKNESS*-0.5,WALL_LENGTH*0.5,ROOM_CENTER_Z);
+    wallRight.position.set(wallWidth*0.5+WALL_THICKNESS*0.5,WALL_LENGTH*0.5,ROOM_CENTER_Z);
 
     return {
       scene,
