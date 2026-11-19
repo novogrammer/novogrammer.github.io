@@ -26,6 +26,21 @@ interface ExhibitionWork {
 
 const exhibitionWorkList: ExhibitionWork[] = [
   {
+    title: "Deterministic replay",
+    year: "2026",
+    description: "物理エンジンの再現性を利用し、ばらばらのパーツが集まると一枚の画像が現れる、不思議な表現を試した作品。好きな画像に差し替えて、同じ動きから自分だけの動画をMP4で書き出せます。",
+    links: [
+      {
+        label: "Live site",
+        url: "https://novogrammer.github.io/deterministic-replay/",
+      },
+      {
+        label: "Source",
+        url: "https://github.com/novogrammer/deterministic-replay",
+      },
+    ],
+  },
+  {
     title: "顔万華鏡 three.js版",
     year: "2026",
     description: "カメラに映った顔の位置に追従し、顔を中心に光る紙吹雪が万華鏡模様を作るthree.js製の作品。対応環境ではHDR表示にもなります。",
